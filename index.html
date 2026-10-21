@@ -250,7 +250,43 @@ function closeSellerRegistration() {
 </script>
     Become a Seller
   </button>
+
+<header>
+  <div class="logo">SS SUPPLY</div>
+  <button class="header-button" onclick="openSellerRegistration()">
+    Become a Seller
+  </button>
 </header>
+
+<div id="seller-registration" style="display:none; padding:24px; max-width:450px; margin:auto; background:white;">
+  <h2>Become an SS SUPPLY Seller</h2>
+  <p>Create your seller account.</p>
+
+  <form id="seller-signup-form">
+    <label for="seller-email">Email address</label>
+    <input id="seller-email" type="email" required placeholder="Enter your email" style="display:block;width:100%;padding:12px;margin:8px 0 16px;">
+
+    <label for="seller-password">Password</label>
+    <input id="seller-password" type="password" required minlength="8" placeholder="At least 8 characters" style="display:block;width:100%;padding:12px;margin:8px 0 16px;">
+
+    <button id="seller-submit" type="submit" style="padding:12px 20px;">Create Seller Account</button>
+    <button type="button" onclick="closeSellerRegistration()">Cancel</button>
+
+    <p id="seller-registration-message" role="status"></p>
+  </form>
+</div>
+
+<script>
+function openSellerRegistration() {
+  document.getElementById("seller-registration").style.display = "block";
+  document.getElementById("seller-registration").scrollIntoView({behavior: "smooth"});
+}
+
+function closeSellerRegistration() {
+  document.getElementById("seller-registration").style.display = "none";
+}
+</script>
+
 
 <section class="hero">
   <h1>Source Products. Grow Your Business.</h1>
