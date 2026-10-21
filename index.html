@@ -299,6 +299,125 @@ db.auth.onAuthStateChange((_event, session) => {
 });
 
 checkConnection();
+async function openCameraSearch() {
+  const input = document.getElementById("cameraPhoto");
+  if (input) input.click();
+}
+
+async function searchByPhoto(file) {
+  const status = document.getElementById("featureStatus");
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    status.textContent = "Please select an image.";
+    return;
+  }
+
+  const preview = document.getElementById("cameraPreview");
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+
+  status.textContent =
+    "Photo selected. Visual product matching is not connected yet. You can search product names below.";
+}
+
+async function startConversation(sellerId, productId = null) {
+  const { data: authData } = await db.auth.getUser();
+  const user = authData?.user;
+
+  if (!user) {
+    alert("Please sign in first.");
+    return;
+  }
+
+  if (!sellerId || sellerId === user.id) {
+    alert("Choose a valid seller account.");
+    return;
+  }
+
+  const { data, error } = await db
+    .from("conversations")
+    .insert({
+      buyer_id: user.id,
+      seller_id: sellerId,
+      product_id: productId ? String(productId) : null
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    alert("Could not start chat: " + error.message);
+    return;
+  }
+
+  document.getElementById("conversationId").value = data.id;
+  document.getElementById("chatPanel").style.display = "block";
+  await loadMessages();
+}
+
+async function loadMessages() {
+  const conversationId =
+    document.getElementById("conversationId").value;
+  if (!conversationId) return;
+
+  const { data, error } = await db
+    .from("messages")
+    .select("id,sender_id,body,created_at")
+    .eq("conversation_id", conversationId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    document.getElementById("chatMessages").textContent =
+      "Could not load messages: " + error.message;
+    return;
+  }
+
+  const { data: authData } = await db.auth.getUser();
+  const currentUser = authData?.user?.id;
+
+  const box = document.getElementById("chatMessages");
+  box.replaceChildren();
+
+  (data || []).forEach(message => {
+    const line = document.createElement("p");
+    line.textContent =
+      (message.sender_id === currentUser ? "You: " : "Other user: ") +
+      message.body;
+    box.appendChild(line);
+  });
+}
+
+async function sendChatMessage() {
+  const conversationId =
+    document.getElementById("conversationId").value;
+  const input = document.getElementById("chatInput");
+  const body = input.value.trim();
+
+  if (!conversationId || !body) return;
+
+  const { data: authData } = await db.auth.getUser();
+  const user = authData?.user;
+
+  if (!user) {
+    alert("Please sign in first.");
+    return;
+  }
+
+  const { error } = await db.from("messages").insert({
+    conversation_id: conversationId,
+    sender_id: user.id,
+    body
+  });
+
+  if (error) {
+    alert("Message not sent: " + error.message);
+    return;
+  }
+
+  input.value = "";
+  await loadMessages();
+}
+
 </script>
 </body>
 </html>
