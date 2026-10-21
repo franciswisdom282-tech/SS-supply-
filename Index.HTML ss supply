@@ -1,1 +1,346 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SS SUPPLY | Wholesale Marketplace</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f6f8;
+  color: #222;
+}
+
+header {
+  background: #fff;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.logo {
+  color: #f36b21;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header-button {
+  background: #f36b21;
+  color: white;
+  padding: 10px 13px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.hero {
+  background: #fff0e6;
+  padding: 30px 18px;
+}
+
+.hero h1 {
+  font-size: 27px;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.search {
+  display: flex;
+  gap: 8px;
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.search button {
+  background: #f36b21;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.container {
+  padding: 20px 14px;
+}
+
+.section-title {
+  font-size: 21px;
+  margin-bottom: 15px;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.category {
+  background: white;
+  padding: 18px 5px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 14px;
+  border: 1px solid #eee;
+}
+
+.category span {
+  display: block;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.product {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.product-image {
+  background: #fff0e6;
+  height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 55px;
+}
+
+.product-info {
+  padding: 12px;
+}
+
+.product h3 {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.price {
+  color: #f36b21;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.product p {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.product button {
+  width: 100%;
+  padding: 10px 5px;
+  background: white;
+  border: 1px solid #f36b21;
+  color: #f36b21;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.notice {
+  background: white;
+  padding: 18px;
+  margin-top: 25px;
+  border-radius: 8px;
+  line-height: 1.7;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 15px;
+  color: #777;
+  font-size: 13px;
+}
+
+@media (min-width: 700px) {
+  .hero {
+    padding: 55px 7%;
+  }
+
+  .container {
+    padding: 30px 7%;
+  }
+
+  .products {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .categories {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">SS SUPPLY</div>
+  <button class="header-button"
+    onclick="alert('Seller registration will be connected in the next stage.')">
+    Become a Seller
+  </button>
+</header>
+
+<section class="hero">
+  <h1>Source Products. Grow Your Business.</h1>
+  <p>
+    Discover wholesale products from sellers in Nigeria.
+    Shop footwear, fashion, electronics and more.
+  </p>
+
+  <form class="search" id="searchForm">
+    <input id="searchInput"
+      type="search"
+      placeholder="Search products..."
+      aria-label="Search products">
+    <button type="submit">Search</button>
+  </form>
+</section>
+
+<main class="container">
+
+  <h2 class="section-title">Shop by Category</h2>
+
+  <section class="categories">
+    <div class="category"><span>👟</span>Shoes</div>
+    <div class="category"><span>👕</span>Fashion</div>
+    <div class="category"><span>📱</span>Electronics</div>
+    <div class="category"><span>💄</span>Beauty</div>
+    <div class="category"><span>👜</span>Bags</div>
+    <div class="category"><span>📦</span>Other Goods</div>
+  </section>
+
+  <h2 class="section-title">Featured Products</h2>
+
+  <section class="products" id="productList">
+
+    <article class="product" data-name="Sneakers">
+      <div class="product-image">👟</div>
+      <div class="product-info">
+        <h3>Fashion Sneakers</h3>
+        <div class="price">₦25,000</div>
+        <p>Sample price · Nigeria</p>
+        <button onclick="requestProduct('Fashion Sneakers')">
+          Enquire Now
+        </button>
+      </div>
+    </article>
+
+    <article class="product" data-name="Clothing">
+      <div class="product-image">👕</div>
+      <div class="product-info">
+        <h3>Wholesale Clothing</h3>
+        <div class="price">₦15,000</div>
+        <p>Sample price · Nigeria</p>
+        <button onclick="requestProduct('Wholesale Clothing')">
+          Enquire Now
+        </button>
+      </div>
+    </article>
+
+    <article class="product" data-name="Electronics">
+      <div class="product-image">🎧</div>
+      <div class="product-info">
+        <h3>Wireless Headphones</h3>
+        <div class="price">₦18,000</div>
+        <p>Sample price · Nigeria</p>
+        <button onclick="requestProduct('Wireless Headphones')">
+          Enquire Now
+        </button>
+      </div>
+    </article>
+
+    <article class="product" data-name="Bags">
+      <div class="product-image">👜</div>
+      <div class="product-info">
+        <h3>Fashion Bags</h3>
+        <div class="price">₦12,000</div>
+        <p>Sample price · Nigeria</p>
+        <button onclick="requestProduct('Fashion Bags')">
+          Enquire Now
+        </button>
+      </div>
+    </article>
+
+  </section>
+
+  <div class="notice">
+    <h2>Are You a Supplier?</h2>
+    <p>
+      Join SS SUPPLY to showcase your products and reach
+      more buyers across Nigeria.
+    </p>
+    <br>
+    <button class="header-button"
+      onclick="alert('Seller accounts will be implemented in the next stage.')">
+      Start Selling
+    </button>
+  </div>
+
+</main>
+
+<footer>
+  <p>SS SUPPLY · Nigeria's Wholesale Marketplace</p>
+  <p>Sample products and prices are for demonstration only.</p>
+</footer>
+
+<script>
+document.getElementById("searchForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const query = document.getElementById("searchInput")
+    .value.trim().toLowerCase();
+
+  const products = document.querySelectorAll(".product");
+  let found = 0;
+
+  products.forEach(function(product) {
+    const name = product.dataset.name.toLowerCase();
+    const visible = name.includes(query);
+    product.style.display = visible ? "" : "none";
+
+    if (visible) found++;
+  });
+
+  if (found === 0) {
+    alert("No matching sample products found. Try another search.");
+  }
+});
+
+function requestProduct(name) {
+  alert("You selected " + name +
+    ". Buyer enquiries will be connected in the next stage.");
+}
+</script>
+
+</body>
+</html>
