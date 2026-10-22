@@ -522,8 +522,6 @@ $("messageForm").addEventListener("submit",async e=>{
  await loadMessages();
 });
 
-});
-
 async function loadOrders(){
  if(!user){$("orders").querySelector("p").textContent="Sign in to view order information.";return;}
 }
