@@ -964,7 +964,7 @@ async function sendReply() {
   const {error} = await db.from(MESSAGE_TABLE).insert({
     sender_id: currentUser.id,
     receiver_id: selectedProductForReply.receiver_id,
-    product_id: selectedProductForReply.product_id,
+    
     message
   });
   if (error) {
