@@ -94,7 +94,60 @@ function readCart(){try{return JSON.parse(localStorage.getItem('ss_supply_cart')
 function saveCart(){try{localStorage.setItem('ss_supply_cart',JSON.stringify(cart))}catch(e){}}
 function categoryFor(product){const text=((product.category||'')+' '+(product.name||'')).toLowerCase();return CATEGORIES.find(c=>c.name.toLowerCase()===(product.category||'').toLowerCase()||c.terms.some(t=>text.includes(t)))?.name || 'Other Shoe Materials'}
 function renderCategoryGrids(){const markup=CATEGORIES.map(c=>`<button class="category" onclick="filterCategory('${escapeHtml(c.name).replace(/'/g,"\\'")}')"><span class="emoji">${c.emoji}</span>${escapeHtml(c.name)}</button>`).join('');$('homeCategories').innerHTML=markup;$('allCategories').innerHTML=markup;$('productCategory').innerHTML='<option value="">Choose a category</option>'+CATEGORIES.map(c=>`<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join('')}
-function showPage(page){const pages=['home','categories','messages','profile','sell','cart','orders','subscription','admin'];if(!pages.includes(page))page='home';document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));const target=$('page-'+page);if(target)target.classList.add('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));window.scrollTo({top:0,behavior:'smooth'});if(page==='cart')renderCart();if(page==='orders')loadOrders();if(page==='messages')loadConversations();if(page==='subscription')loadSubscriptionInfo();if(page==='admin')loadAdminSubscriptions();if(page==='profile')refreshProfilePanels();if(page==='sell')updateSellPanel()}
+
+function showPage(page) {
+  const pages = [
+    'home',
+    'categories',
+    'messages',
+    'profile',
+    'sell',
+    'cart',
+    'orders',
+    'subscription',
+    'admin'
+  ];
+
+  if (!pages.includes(page)) {
+    page = 'home';
+  }
+
+  document.querySelectorAll('.page').forEach(function (section) {
+    section.classList.remove('active');
+  });
+
+  const target = document.getElementById('page-' + page);
+
+  if (target) {
+    target.classList.add('active');
+  } else {
+    document.getElementById('page-home').classList.add('active');
+    page = 'home';
+  }
+
+  document.querySelectorAll('.nav-btn').forEach(function (button) {
+    button.classList.toggle(
+      'active',
+      button.getAttribute('data-page') === page
+    );
+  });
+
+  if (page === 'categories') {
+    renderCategoryGrids();
+    renderCategoryProducts();
+  }
+
+  if (page === 'cart') renderCart();
+  if (page === 'orders') loadOrders();
+  if (page === 'messages') loadConversations();
+  if (page === 'subscription') loadSubscriptionInfo();
+  if (page === 'admin') loadAdminSubscriptions();
+  if (page === 'profile') refreshProfilePanels();
+  if (page === 'sell') updateSellPanel();
+
+  window.scrollTo(0, 0);
+}
+
 function initClient(){if(!window.supabase){toast('Could not load the Supabase library. Check your internet connection.');return}supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);supabaseClient.auth.getSession().then(({data,error})=>{if(error)console.warn(error);currentUser=data?.session?.user||null;refreshProfilePanels();loadProducts();loadSubscriptionInfo();}).catch(e=>console.error(e));supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;refreshProfilePanels();updateSellPanel();if(currentUser){loadProfile();loadConversations()}else{$('profileName').value='';$('profilePhone').value=''}})}
 async function loadProducts(){if(!supabaseClient){renderProducts([], 'homeProducts');return}const target=$('homeProducts');target.innerHTML='<div class="loading">Loading products...</div>';try{const {data,error}=await supabaseClient.from('products').select('id,seller_id,name,description,category,price,stock_quantity,image_url,is_active,created_at,colour,min_order_m,stock_m,thickness_mm,width').eq('is_active',true).order('created_at',{ascending:false}).limit(100);if(error)throw error;products=data||[];renderProducts(products,'homeProducts');renderCategoryProducts();}catch(e){console.error(e);target.innerHTML=`<div class="empty"><div class="big">OTHER</div><strong>Products are not available yet</strong><p>${escapeHtml(e.message||'Check Supabase table access and policies.')}</p></div>`;$('categoryProducts').innerHTML=target.innerHTML}}
 function renderProducts(list,targetId){const el=$(targetId);if(!el)return;if(!list.length){el.innerHTML='<div class="empty"><div class="big">SEARCH</div><strong>No products found</strong><p>Try another search or check back later.</p></div>';return}el.innerHTML=list.map(p=>{const image=p.image_url?`<img class="product-image" src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy" onerror="this.outerHTML='<div class=&quot;image-placeholder&quot;>SHOES</div>'">`:'<div class="image-placeholder">SHOES</div>';const meta=[p.colour?'Colour: '+p.colour:'',p.width?'Width: '+p.width:'',p.thickness_mm?'Thickness: '+p.thickness_mm:'',p.min_order_m?'Minimum: '+p.min_order_m+' m':''].filter(Boolean).join('   ');return `<article class="product-card">${image}<div class="product-body"><div class="product-name">${escapeHtml(p.name)}</div><div class="price">${money(p.price)} <span class="small-muted">/ unit</span></div><div class="meta">${escapeHtml(p.category||categoryFor(p))}${meta?'<br>'+escapeHtml(meta):''}</div><div class="button-row"><button class="btn small" onclick="addToCart('${escapeHtml(p.id)}')">Add to cart</button><button class="btn secondary small" onclick="messageSeller('${escapeHtml(p.seller_id)}')">Message</button></div></div></article>`}).join('')}
