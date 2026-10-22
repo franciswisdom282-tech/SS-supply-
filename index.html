@@ -1,1 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f97316">
+<title>SS SUPPLY | Shoe Materials Wholesale</title>
+<style>
+:root{--orange:#f97316;--dark:#182230;--bg:#f5f6f8;--line:#e5e7eb}
+*{box-sizing:border-box}
+body{margin:0;padding-bottom:78px;font-family:Arial,sans-serif;background:var(--bg);color:var(--dark)}
+header{position:sticky;top:0;z-index:5;background:white;padding:13px 4%;border-bottom:1px solid var(--line)}
+.brand{font-size:25px;font-weight:900;color:var(--orange)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+button{border:0;border-radius:8px;background:var(--orange);color:white;padding:11px 13px;font-weight:bold;cursor:pointer}
+.secondary{background:#fff0e2;color:#a84800}
+.dark{background:var(--dark)}
+input,select,textarea{width:100%;padding:12px;border:1px solid #d5d9df;border-radius:8px;font:inherit;background:white}
+textarea{min-height:80px}
+.search{display:flex;gap:7px;margin-top:12px}
+.search input{flex:1;min-width:0}
+nav{display:flex;gap:7px;overflow-x:auto;padding-top:10px}
+nav button{white-space:nowrap}
+main{max-width:1200px;margin:auto;padding:16px 4%}
+.hero{padding:22px;border-radius:14px;background:linear-gradient(120deg,#fff0df,#ffdfbd)}
+.hero h1{font-size:clamp(26px,5vw,40px);margin:0 0 10px}
+.section{background:white;border:1px solid var(--line);padding:15px;border-radius:12px;margin:16px 0}
+.muted{color:#667085;font-size:14px}
+.hidden{display:none!important}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
+.product{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:white;min-width:0}
+.product img{width:100%;height:150px;object-fit:cover;background:#eee}
+.productbody{padding:10px}
+.product h3{font-size:16px;overflow-wrap:anywhere}
+.price{font-weight:bold;color:#d85b00}
+.product button{width:100%;margin-top:6px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.full{grid-column:1/-1}
+.notice{background:#fff3e8;padding:10px;margin:8px 0;border-radius:8px;overflow-wrap:anywhere}
+#status{font-size:13px;margin-top:9px}
+#chatLog{max-height:260px;overflow:auto;background:#f6f7f8;padding:10px}
+.msg{background:white;padding:9px;margin:6px 0;border-radius:8px;overflow-wrap:anywhere}
+.bottom{position:fixed;bottom:0;left:0;right:0;z-index:10;display:grid;grid-template-columns:repeat(5,1fr);background:white;border-top:1px solid var(--line);padding:6px 2px calc(6px + env(safe-area-inset-bottom))}
+.bottom button{background:white;color:#475467;font-size:11px;padding:7px 1px}
+.bottom button.active{background:#fff0e2;color:#a84800}
+.bottom span{display:block;font-size:18px;margin-bottom:3px}
+footer{text-align:center;padding:22px;color:#667085}
+@media(max-width:520px){.fields{grid-template-columns:1fr}.full{grid-column:auto}.product img{height:130px}.search{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<header>
+ <div class="row between">
+  <div class="brand">SS SUPPLY</div>
+  <button onclick="show('account')">Account</button>
+ </div>
+ <div class="search">
+  <input id="search" placeholder="Search shoe materials and colours..." oninput="renderProducts()">
+  <button onclick="renderProducts()">Search</button>
+  <button class="secondary" onclick="voiceSearch()">🎙️</button>
+  <button class="dark" onclick="document.getElementById('camera').click()">📷</button>
+  <input id="camera" class="hidden" type="file" accept="image/*" capture="environment" onchange="photoSearch(event)">
+ </div>
+ <p id="photoStatus" class="muted">Search by text, voice or select a product photo.</p>
+ <nav>
+  <button class="secondary" onclick="filter('All')">All</button>
+  <button class="secondary" onclick="filter('Synthetic Leather')">Synthetic Leather</button>
+  <button class="secondary" onclick="filter('Mesh')">Mesh</button>
+  <button class="secondary" onclick="filter('Suede')">Suede</button>
+  <button class="secondary" onclick="filter('PVC')">PVC</button>
+  <button class="secondary" onclick="filter('Shoe Lining')">Shoe Lining</button>
+ </nav>
+ <div id="status">Connecting to SS SUPPLY...</div>
+</header>
 
+<main>
+ <section class="hero">
+  <h1>Shoe Materials Wholesale Marketplace</h1>
+  <p>Discover shoe uppers, synthetic leather, mesh, suede, PVC, shoe lining and more. Find suppliers and enquire about wholesale prices.</p>
+  <div class="row">
+   <button onclick="show('seller')">Become a Supplier</button>
+   <button class="secondary" onclick="show('catalogue')">Browse Materials</button>
+  </div>
+ </section>
+
+ <section id="account" class="section">
+  <h2>Account</h2>
+  <p class="muted">Create an account or sign in to buy, sell and contact suppliers.</p>
+  <div class="fields">
+   <input id="email" type="email" placeholder="Email address" autocomplete="email">
+   <input id="password" type="password" placeholder="Password (minimum 6 characters)" autocomplete="current-password">
+  </div>
+  <div class="row" style="margin-top:10px">
+   <button onclick="signup()">Create Account</button>
+   <button class="dark" onclick="signin()">Sign In</button>
+   <button class="secondary" onclick="signout()">Sign Out</button>
+  </div>
+  <p id="userStatus" class="muted">Not signed in.</p>
+ </section>
+
+ <section id="seller" class="section hidden">
+  <h2>Supplier Dashboard</h2>
+  <p class="muted">Sign in before publishing a shoe-material listing.</p>
+  <form id="productForm">
+   <div class="fields">
+    <input id="pName" placeholder="Material name" required>
+    <input id="pPrice" type="number" min="0" step="0.01" placeholder="Price per metre (₦)" required>
+    <select id="pCategory">
+     <option>Synthetic Leather</option>
+     <option>Mesh</option>
+     <option>Suede</option>
+     <option>PVC</option>
+     <option>Shoe Lining</option>
+     <option>Canvas</option>
+     <option>Microfiber</option>
+     <option>Other</option>
+    </select>
+    <input id="pColour" placeholder="Colour" required>
+    <input id="pThickness" placeholder="Thickness, e.g. 1.2 mm">
+    <input id="pWidth" placeholder="Material width">
+    <input id="pMinimum" type="number" min="1" value="1" placeholder="Minimum order in metres" required>
+    <input id="pStock" type="number" min="0" value="0" placeholder="Available metres" required>
+    <input id="pImage" class="full" type="file" accept="image/*" required>
+    <textarea id="pDescription" class="full" placeholder="Quality, texture, backing and delivery details"></textarea>
+   </div>
+   <button style="margin-top:10px">Publish Material</button>
+  </form>
+  <h3>Your Listings</h3>
+  <div id="sellerProducts"></div>
+ </section>
+
+ <section id="categories" class="section hidden">
+  <h2>Shop by Category</h2>
+  <div class="row">
+   <button class="secondary" onclick="filter('Synthetic Leather')">Synthetic Leather</button>
+   <button class="secondary" onclick="filter('Mesh')">Mesh</button>
+   <button class="secondary" onclick="filter('Suede')">Suede</button>
+   <button class="secondary" onclick="filter('PVC')">PVC</button>
+   <button class="secondary" onclick="filter('Shoe Lining')">Shoe Lining</button>
+   <button class="secondary" onclick="filter('Canvas')">Canvas</button>
+   <button class="secondary" onclick="filter('All')">All Materials</button>
+  </div>
+ </section>
+
+ <section id="catalogue" class="section">
+  <div class="row between">
+   <h2>Shoe Materials</h2>
+   <button class="secondary" onclick="loadProducts()">Refresh</button>
+  </div>
+  <div id="products" class="grid"></div>
+ </section>
+
+ <section id="messages" class="section hidden">
+  <h2>Buyer–Supplier Messages</h2>
+  <p id="chatPartner" class="muted">Choose Message Supplier on a listing.</p>
+  <div id="chatLog"></div>
+  <form id="messageForm">
+   <textarea id="messageText" placeholder="Ask about colour, quality, quantity or delivery..." required></textarea>
+   <button style="margin-top:8px">Send Message</button>
+   <button type="button" class="secondary" onclick="loadMessages()">Refresh Messages</button>
+  </form>
+ </section>
+
+ <section id="cart" class="section hidden">
+  <h2>Enquiry Cart</h2>
+  <div id="cartDetails"></div>
+  <p class="muted">This cart saves on this device. Secure checkout and payment are not connected yet.</p>
+  <button class="secondary" onclick="show('catalogue')">Continue Shopping</button>
+ </section>
+
+ <section id="orders" class="section hidden">
+  <h2>My Orders</h2>
+  <p class="muted">Real order history requires an orders table and secure access policies.</p>
+  <p>Online bank transfer and card payments must be connected to a payment provider before customers can pay here.</p>
+ </section>
+</main>
+
+<footer>SS SUPPLY · Shoe Materials Wholesale Marketplace</footer>
+
+<div class="bottom">
+ <button id="nav-home" class="active" onclick="show('catalogue');activeNav('home')"><span>⌂</span>Home</button>
+ <button id="nav-categories" onclick="show('categories');activeNav('categories')"><span>▦</span>Categories</button>
+ <button id="nav-messages" onclick="show('messages');activeNav('messages')"><span>✉</span>Messages</button>
+ <button id="nav-cart" onclick="show('cart');renderCart();activeNav('cart')"><span>🛒</span>Cart</button>
+ <button id="nav-profile" onclick="show('account');activeNav('profile')"><span>👤</span>My Profile</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* SS SUPPLY Supabase project configuration */
+const SUPABASE_URL = "https://sqqzkfnoxnqntpcjfcbr.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dSayHKq4rvYZY5BQYQXs7w_tr8Q04ia";
+
+/* These names must match your existing Supabase database. */
+const PRODUCTS_TABLE = "products";
+const MESSAGES_TABLE = "ss_messages";
+const IMAGE_BUCKET = "product-images";
+
+let db = null;
+let user = null;
+let products = [];
+let activeCategory = "All";
+let chatSupplier = null;
+
+const $ = id => document.getElementById(id);
+
+function initClient(){
+ if(!window.supabase){
+  $("status").textContent="Supabase library could not load. Check your internet connection.";
+  return false;
+ }
+ if(!db) db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+ return true;
+}
+
+function esc(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function money(v){
+ return new Intl.NumberFormat("en-NG",{
+  style:"currency",currency:"NGN",maximumFractionDigits:2
+ }).format(Number(v)||0);
+}
+
+function show(id){
+ ["account","seller","categories","catalogue","messages","cart","orders"]
+ .forEach(x=>$(x).classList.add("hidden"));
+ $(id).classList.remove("hidden");
+ if(id==="messages")loadMessages();
+ if(id==="seller")renderSellerProducts();
+ if(id==="cart")renderCart();
+ if(id==="orders")loadOrders();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function activeNav(which){
+ ["home","categories","messages","cart","profile"].forEach(x=>{
+  $("nav-"+x).classList.toggle("active",x===which);
+ });
+}
+
+function filter(c){
+ activeCategory=c;
+ show("catalogue");
+ activeNav("categories");
+ renderProducts();
+}
+
+function voiceSearch(){
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SpeechRecognition){
+  alert("Voice search is not supported by this browser. Please type your search.");
+  return;
+ }
+ const r=new SpeechRecognition();
+ r.lang="en-NG";
+ r.onresult=e=>{
+  $("search").value=e.results[0][0].transcript;
+  activeCategory="All";
+  renderProducts();
+ };
+ r.onerror=()=>{$("photoStatus").textContent="Voice search failed. Please type your search.";};
+ $("photoStatus").textContent="Listening. Say the shoe material you need.";
+ r.start();
+}
+
+function photoSearch(e){
+ const f=e.target.files&&e.target.files[0];
+ if(!f)return;
+ if(!f.type.startsWith("image/")){alert("Please select an image.");return;}
+ if(f.size>8*1024*1024){alert("Choose an image smaller than 8 MB.");return;}
+ $("photoStatus").textContent="Photo selected: "+f.name+". Automatic visual matching requires a separate image-search service.";
+}
+
+async function refreshUser(){
+ if(!initClient())return;
+ const {data,error}=await db.auth.getUser();
+ user=error?null:data.user;
+ $("userStatus").textContent=user?"Signed in as "+user.email:"Not signed in.";
+}
+
+async function signup(){
+ if(!initClient())return;
+ const email=$("email").value.trim();
+ const password=$("password").value;
+ if(!email||password.length<6){
+  alert("Enter a valid email and a password of at least 6 characters.");
+  return;
+ }
+ const {data,error}=await db.auth.signUp({email,password});
+ if(error){alert("Registration failed: "+error.message);return;}
+ user=data.user;
+ await refreshUser();
+ alert(data.session?"Account created and signed in.":"Check your email for a confirmation link, then sign in.");
+}
+
+async function signin(){
+ if(!initClient())return;
+ const {data,error}=await db.auth.signInWithPassword({
+  email:$("email").value.trim(),
+  password:$("password").value
+ });
+ if(error){alert("Sign-in failed: "+error.message);return;}
+ user=data.user;
+ await refreshUser();
+ await loadProducts();
+ alert("Signed in successfully.");
+}
+
+async function signout(){
+ if(!initClient())return;
+ const {error}=await db.auth.signOut();
+ if(error){alert("Sign-out failed: "+error.message);return;}
+ user=null;
+ await refreshUser();
+}
+
+async function loadProducts(){
+ if(!initClient())return;
+ $("status").textContent="Loading shoe materials...";
+ const {data,error}=await db.from(PRODUCTS_TABLE)
+  .select("id,name,price,category,description,image_url,seller_id,colour,thickness_mm,width,min_order_m,stock_m")
+  .order("id",{ascending:false}).limit(150);
+ if(error){
+  products=[];
+  $("products").innerHTML="<p>Products could not load. Check your products table columns and access policies.</p>";
+  $("status").textContent="Database error: "+error.message;
+  return;
+ }
+ products=(data||[]).filter(p=>
+  /shoe|leather|mesh|suede|pvc|lining|canvas|microfiber|material|upper/i
+  .test([p.name,p.category,p.description].join(" "))
+ );
+ $("status").textContent=products.length+" shoe-material listing(s) loaded.";
+ renderProducts();
+ renderSellerProducts();
+}
+
+function renderProducts(){
+ const q=$("search").value.trim().toLowerCase();
+ const list=products.filter(p=>
+  (activeCategory==="All"||String(p.category||"").toLowerCase()===activeCategory.toLowerCase())&&
+  [p.name,p.category,p.description,p.colour].some(v=>String(v||"").toLowerCase().includes(q))
+ );
+ $("products").innerHTML=list.length?list.map(p=>`
+  <article class="product">
+   <img src="${esc(p.image_url||"https://placehold.co/400x300?text=Shoe+Material")}" alt="${esc(p.name)}" loading="lazy">
+   <div class="productbody">
+    <h3>${esc(p.name)}</h3>
+    <p class="muted">${esc(p.category||"Shoe Material")} · ${esc(p.colour||"Colour not specified")}</p>
+    <p class="price">${money(p.price)} / metre</p>
+    <p class="muted">${p.thickness_mm?esc(p.thickness_mm)+" · ":""}${p.width?"Width: "+esc(p.width)+" · ":""}Minimum order: ${esc(p.min_order_m??1)} m</p>
+    <p>${esc(p.description||"Contact the supplier for details.")}</p>
+    <button onclick="startChat('${esc(p.seller_id||"")}','${esc(p.name)}')">Message Supplier</button>
+    <button class="secondary" onclick="addCart('${esc(p.id)}')">Add to Cart</button>
+   </div>
+  </article>`).join(""):"<p>No matching shoe materials found. Try another search or check back later.</p>";
+}
+
+async function uploadImage(file){
+ const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+ const path=user.id+"/"+crypto.randomUUID()+"."+ext;
+ const {error}=await db.storage.from(IMAGE_BUCKET).upload(path,file,{
+  contentType:file.type,upsert:false
+ });
+ if(error)throw error;
+ return db.storage.from(IMAGE_BUCKET).getPublicUrl(path).data.publicUrl;
+}
+
+$("productForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ if(!initClient())return;
+ await refreshUser();
+ if(!user){alert("Please sign in before publishing.");show("account");return;}
+ const name=$("pName").value.trim();
+ const price=Number($("pPrice").value);
+ const file=$("pImage").files[0];
+ const minimum=Number($("pMinimum").value);
+ const stock=Number($("pStock").value);
+ if(!name||!Number.isFinite(price)||price<0||!file||minimum<1||stock<0){
+  alert("Please complete the required fields with valid values.");
+  return;
+ }
+ try{
+  $("status").textContent="Uploading product photo...";
+  const image_url=await uploadImage(file);
+  const item={
+   name,price,category:$("pCategory").value,
+   description:$("pDescription").value.trim(),
+   image_url,seller_id:user.id,
+   colour:$("pColour").value.trim(),
+   thickness_mm:$("pThickness").value.trim()||null,
+   width:$("pWidth").value.trim()||null,
+   min_order_m:minimum,stock_m:stock
+  };
+  const {error}=await db.from(PRODUCTS_TABLE).insert(item);
+  if(error)throw error;
+  $("productForm").reset();
+  await loadProducts();
+  alert("Material listing published.");
+ }catch(err){
+  alert("Could not publish: "+err.message+". Check your products table columns, Storage bucket and access policies.");
+ }
+});
+
+function renderSellerProducts(){
+ if(!user){$("sellerProducts").innerHTML="<p class='muted'>Sign in to manage your listings.</p>";return;}
+ const mine=products.filter(p=>String(p.seller_id)===String(user.id));
+ $("sellerProducts").innerHTML=mine.length?mine.map(p=>`
+  <div class="notice">${esc(p.name)} — ${money(p.price)}/m
+  <button class="secondary" onclick="deleteProduct('${esc(p.id)}')">Delete</button></div>`).join(""):"<p class='muted'>You have not listed any materials yet.</p>";
+}
+
+async function deleteProduct(id){
+ if(!user||!confirm("Delete this listing?"))return;
+ const {error}=await db.from(PRODUCTS_TABLE).delete().eq("id",id).eq("seller_id",user.id);
+ if(error){alert("Delete failed: "+error.message);return;}
+ await loadProducts();
+}
+
+function getCart(){
+ try{return JSON.parse(localStorage.getItem("ssSupplyCart")||"[]");}
+ catch{return [];}
+}
+
+function addCart(id){
+ const p=products.find(x=>String(x.id)===String(id));
+ if(!p)return;
+ const cart=getCart();
+ const found=cart.find(x=>String(x.id)===String(id));
+ if(found)found.metres+=Number(p.min_order_m||1);
+ else cart.push({
+  id:p.id,name:p.name,price:Number(p.price),
+  metres:Number(p.min_order_m||1)
+ });
+ localStorage.setItem("ssSupplyCart",JSON.stringify(cart));
+ alert("Material added to your cart.");
+ renderCart();
+}
+
+function renderCart(){
+ const cart=getCart();
+ $("cartDetails").innerHTML=cart.length?cart.map(p=>`
+  <div class="notice">${esc(p.name)} · ${p.metres} m × ${money(p.price)}
+  <button class="secondary" onclick="removeCart('${esc(p.id)}')">Remove</button></div>`
+ ).join("")+"<h3>Estimated total: "+money(cart.reduce((s,p)=>s+p.price*p.metres,0))+"</h3>":"Your cart is empty.";
+}
+
+function removeCart(id){
+ localStorage.setItem("ssSupplyCart",JSON.stringify(getCart().filter(p=>String(p.id)!==String(id))));
+ renderCart();
+}
+
+function startChat(seller,name){
+ if(!seller||seller==="undefined"||seller==="null"){
+  alert("This listing has no supplier ID.");return;
+ }
+ if(!user){alert("Please sign in first.");show("account");return;}
+ if(seller===user.id){alert("This is your own listing.");return;}
+ chatSupplier=seller;
+ $("chatPartner").textContent="Conversation about: "+name;
+ show("messages");
+}
+
+async function loadMessages(){
+ if(!initClient()||!user||!chatSupplier){
+  $("chatLog").textContent="Sign in and choose a supplier listing first.";
+  return;
+ }
+ const expr=`and(sender_id.eq.${user.id},recipient_id.eq.${chatSupplier}),and(sender_id.eq.${chatSupplier},recipient_id.eq.${user.id})`;
+ const {data,error}=await db.from(MESSAGES_TABLE).select("*")
+  .or(expr).order("created_at",{ascending:true}).limit(100);
+ if(error){$("chatLog").textContent="Message error: "+error.message;return;}
+ $("chatLog").innerHTML=(data||[]).map(m=>`
+  <div class="msg"><b>${m.sender_id===user.id?"You":"Supplier"}:</b> ${esc(m.message)}
+  <div class="muted">${m.created_at?new Date(m.created_at).toLocaleString():""}</div></div>`
+ ).join("")||"No messages yet.";
+ $("chatLog").scrollTop=$("chatLog").scrollHeight;
+}
+
+$("messageForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ if(!initClient()||!user||!chatSupplier){
+  alert("Sign in and select a supplier first.");return;
+ }
+ const message=$("messageText").value.trim();
+ if(!message)return;
+ const {error}=await db.from(MESSAGES_TABLE).insert({
+  sender_id:user.id,recipient_id:chatSupplier,message
+ });
+ if(error){alert("Message failed: "+error.message);return;}
+ $("messageText").value="";
+ await loadMessages();
+});
+
+async function loadOrders(){
+ if(!user){$("orders").querySelector("p").textContent="Sign in to view order information.";return;}
+}
+
+async function init(){
+ if(!initClient())return;
+ await refreshUser();
+ await loadProducts();
+ db.auth.onAuthStateChange((_event,session)=>{
+  user=session?.user||null;
+  $("userStatus").textContent=user?"Signed in as "+user.email:"Not signed in.";
+ });
+}
+
+init();
+</script>
+</body>
+</html>
