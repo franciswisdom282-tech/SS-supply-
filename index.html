@@ -1,1 +1,1026 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f97316">
+<meta name="description" content="SS SUPPLY — wholesale shoe materials, soles, leather, fabrics and accessories.">
+<title>SS SUPPLY | Shoe Materials Wholesale</title>
+
+<style>
+:root {
+  --orange: #f97316;
+  --orange-dark: #ea580c;
+  --ink: #182230;
+  --muted: #64748b;
+  --bg: #f5f6f8;
+  --white: #ffffff;
+  --line: #e5e7eb;
+  --green: #15803d;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  padding-bottom: 78px;
+}
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .55; cursor: not-allowed; }
+.topbar {
+  background: var(--orange);
+  color: white;
+  padding: 15px 15px 17px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px #00000012;
+}
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 13px;
+}
+.brand {
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: -.7px;
+}
+.brand small {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.3px;
+  margin-top: 3px;
+}
+.top-actions { display: flex; gap: 8px; }
+.top-icon {
+  border: 0;
+  background: #ffffff24;
+  color: white;
+  border-radius: 12px;
+  padding: 9px 11px;
+  font-size: 19px;
+}
+.searchbar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: white;
+  border-radius: 13px;
+  padding: 5px;
+}
+.searchbar input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  padding: 10px 5px;
+  color: var(--ink);
+}
+.searchbar button {
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 12px;
+  background: var(--orange);
+  color: white;
+  font-weight: 700;
+}
+.search-extra {
+  display: flex;
+  gap: 6px;
+}
+.search-extra button {
+  border: 0;
+  background: #fff1e7;
+  color: var(--orange-dark);
+  padding: 8px;
+  border-radius: 8px;
+}
+main { max-width: 1000px; margin: auto; padding: 14px; }
+.hero {
+  background: linear-gradient(120deg, #fff1e6, #ffe0c4);
+  border-radius: 18px;
+  padding: 21px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.hero-copy { flex: 1; min-width: 0; }
+.hero h1 { font-size: 24px; line-height: 1.15; margin: 0 0 9px; }
+.hero p { font-size: 13px; line-height: 1.5; margin: 0 0 13px; color: #70452c; }
+.primary {
+  border: 0;
+  background: var(--orange);
+  color: white;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-weight: 700;
+}
+.hero-art { font-size: 58px; flex-shrink: 0; }
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 22px 0 12px;
+}
+.section-heading h2 { font-size: 18px; margin: 0; }
+.section-heading button {
+  border: 0;
+  color: var(--orange-dark);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+}
+.categories {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+.category {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  padding: 14px 4px;
+  text-align: center;
+  color: var(--ink);
+}
+.category span { display: block; font-size: 25px; margin-bottom: 7px; }
+.category strong { font-size: 12px; }
+.category.active {
+  border: 2px solid var(--orange);
+  background: #fff7ed;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.product-card {
+  min-width: 0;
+  overflow: hidden;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.product-image {
+  width: 100%;
+  height: 145px;
+  object-fit: cover;
+  display: block;
+  background: #f1f5f9;
+}
+.product-placeholder {
+  height: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+  background: #fff1e6;
+}
+.product-info { padding: 11px; }
+.product-info h3 {
+  font-size: 14px;
+  line-height: 1.35;
+  margin: 0 0 7px;
+  overflow-wrap: anywhere;
+}
+.price { color: var(--orange-dark); font-size: 16px; font-weight: 800; }
+.product-description {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 7px 0;
+  line-height: 1.4;
+}
+.seller-name { font-size: 11px; color: var(--muted); margin: 7px 0; }
+.card-buttons { display: grid; gap: 7px; margin-top: 10px; }
+.card-buttons button {
+  width: 100%;
+  padding: 9px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--orange);
+  background: white;
+  color: var(--orange-dark);
+  font-size: 12px;
+  font-weight: 700;
+}
+.card-buttons button:first-child {
+  background: var(--orange);
+  color: white;
+}
+.panel {
+  display: none;
+  background: white;
+  border-radius: 15px;
+  padding: 17px;
+  border: 1px solid var(--line);
+  margin: 10px 0 18px;
+}
+.panel.active { display: block; }
+.panel h2 { font-size: 20px; margin: 0 0 15px; }
+.field { margin: 13px 0; }
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.field input, .field textarea, .field select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: white;
+  color: var(--ink);
+}
+.field textarea { min-height: 90px; resize: vertical; }
+.full-button {
+  width: 100%;
+  padding: 13px;
+  border: 0;
+  background: var(--orange);
+  color: white;
+  border-radius: 10px;
+  font-weight: 800;
+  margin-top: 7px;
+}
+.secondary-button {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 10px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+.status {
+  display: none;
+  border-radius: 9px;
+  padding: 11px;
+  margin: 10px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.status.show { display: block; }
+.status.error { background: #fef2f2; color: #991b1b; }
+.status.success { background: #f0fdf4; color: #166534; }
+.status.info { background: #eff6ff; color: #1e40af; }
+.small-muted { color: var(--muted); font-size: 13px; line-height: 1.5; }
+.preview {
+  display: none;
+  width: 100%;
+  max-height: 230px;
+  object-fit: contain;
+  margin-top: 10px;
+  border-radius: 10px;
+  background: #f1f5f9;
+}
+.preview.show { display: block; }
+.cart-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cart-item strong { display: block; margin-bottom: 5px; }
+.cart-controls { display: flex; align-items: center; gap: 9px; margin-top: 9px; }
+.cart-controls button {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 7px;
+  padding: 5px 10px;
+}
+.chat-item {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  margin: 9px 0;
+}
+.chat-item p { margin: 7px 0; font-size: 13px; overflow-wrap: anywhere; }
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 8px 2px calc(8px + env(safe-area-inset-bottom));
+  background: white;
+  border-top: 1px solid var(--line);
+}
+.bottom-nav button {
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  font-size: 10px;
+  padding: 4px 0;
+}
+.bottom-nav button span { display: block; font-size: 20px; margin-bottom: 4px; }
+.bottom-nav button.active { color: var(--orange-dark); font-weight: 800; }
+footer { text-align: center; padding: 22px 10px; color: var(--muted); font-size: 11px; }
+.empty { text-align: center; padding: 25px 10px; color: var(--muted); }
+.hidden { display: none !important; }
+
+@media (min-width: 650px) {
+  .topbar { padding-left: max(20px, calc((100% - 960px) / 2)); padding-right: max(20px, calc((100% - 960px) / 2)); }
+  .hero h1 { font-size: 32px; }
+  .hero-art { font-size: 90px; }
+  .categories { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .product-image, .product-placeholder { height: 190px; }
+}
+@media (min-width: 850px) {
+  .product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="brand-row">
+    <div class="brand">SS SUPPLY<small>SHOE MATERIALS WHOLESALE</small></div>
+    <div class="top-actions">
+      <button class="top-icon" aria-label="Cart" onclick="showPanel('cart')">🛒 <span id="cart-count">0</span></button>
+      <button class="top-icon" aria-label="Account" onclick="showPanel('account')">👤</button>
+    </div>
+  </div>
+  <div class="searchbar">
+    <input id="search-input" type="search" placeholder="Search shoe materials..." aria-label="Search products">
+    <div class="search-extra">
+      <button onclick="document.getElementById('photo-search').click()" aria-label="Search using photo">📷</button>
+      <button onclick="voiceSearch()" aria-label="Voice search">🎤</button>
+    </div>
+    <button onclick="searchProducts()">Search</button>
+  </div>
+  <input id="photo-search" type="file" accept="image/*" capture="environment" hidden>
+</header>
+
+<main>
+  <section id="home-view">
+    <div class="hero">
+      <div class="hero-copy">
+        <h1>Find materials for your next order</h1>
+        <p>Discover shoe leather, soles, fabrics and accessories from suppliers.</p>
+        <button class="primary" onclick="document.getElementById('products-heading').scrollIntoView({behavior:'smooth'})">Shop materials →</button>
+      </div>
+      <div class="hero-art" aria-hidden="true">👞</div>
+    </div>
+
+    <div class="section-heading"><h2>Shop by category</h2></div>
+    <div class="categories" id="categories">
+      <button class="category" onclick="chooseCategory('Shoe Leather',this)"><span>🟫</span><strong>Shoe Leather</strong></button>
+      <button class="category" onclick="chooseCategory('Shoe Soles',this)"><span>👟</span><strong>Shoe Soles</strong></button>
+      <button class="category" onclick="chooseCategory('Fabrics',this)"><span>🧵</span><strong>Fabrics</strong></button>
+      <button class="category" onclick="chooseCategory('Accessories',this)"><span>🪡</span><strong>Accessories</strong></button>
+      <button class="category" onclick="chooseCategory('Tools',this)"><span>🛠️</span><strong>Tools</strong></button>
+      <button class="category" onclick="chooseCategory('Other',this)"><span>📦</span><strong>Other</strong></button>
+    </div>
+
+    <div class="section-heading" id="products-heading">
+      <h2 id="products-title">Available products</h2>
+      <button onclick="loadProducts()">Refresh ↻</button>
+    </div>
+    <div id="product-status" class="status"></div>
+    <div id="product-grid" class="product-grid">
+      <div class="empty">Loading products...</div>
+    </div>
+  </section>
+
+  <section id="account" class="panel">
+    <h2>My account</h2>
+    <div id="account-status" class="status"></div>
+    <div id="signed-in-area" class="hidden">
+      <p id="account-email"></p>
+      <button class="secondary-button" onclick="showPanel('publish')">Publish a product</button>
+      <button class="secondary-button" onclick="showPanel('messages')">My messages</button>
+      <button class="full-button" onclick="signOut()">Sign out</button>
+    </div>
+    <div id="signed-out-area">
+      <p class="small-muted">Sign in or create an account to publish products and message suppliers.</p>
+      <div class="field">
+        <label for="auth-email">Email address</label>
+        <input id="auth-email" type="email" autocomplete="email" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="auth-password">Password</label>
+        <input id="auth-password" type="password" autocomplete="current-password" placeholder="At least 6 characters">
+      </div>
+      <button class="full-button" onclick="signIn()">Sign in</button>
+      <button class="secondary-button" onclick="signUp()">Create account</button>
+    </div>
+  </section>
+
+  <section id="publish" class="panel">
+    <h2>Publish a product</h2>
+    <p class="small-muted">Add clear product details and choose a picture from your phone or take a new photo.</p>
+    <div id="publish-status" class="status"></div>
+    <form id="publish-form">
+      <div class="field">
+        <label for="product-name">Product name *</label>
+        <input id="product-name" required maxlength="120" placeholder="e.g. Premium shoe leather">
+      </div>
+      <div class="field">
+        <label for="product-price">Price in naira (₦) *</label>
+        <input id="product-price" required type="number" min="1" step="0.01" placeholder="e.g. 2500">
+      </div>
+      <div class="field">
+        <label for="product-category">Category *</label>
+        <select id="product-category" required>
+          <option value="Shoe Leather">Shoe Leather</option>
+          <option value="Shoe Soles">Shoe Soles</option>
+          <option value="Fabrics">Fabrics</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Tools">Tools</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="product-description">Description</label>
+        <textarea id="product-description" maxlength="2000" placeholder="Describe the material, quality, size and minimum order..."></textarea>
+      </div>
+      <div class="field">
+        <label>Product picture</label>
+        <input id="product-image" type="file" accept="image/*" capture="environment">
+        <img id="image-preview" class="preview" alt="Selected product preview">
+      </div>
+      <button class="full-button" id="publish-button" type="submit">Publish product</button>
+    </form>
+  </section>
+
+  <section id="messages" class="panel">
+    <h2>Supplier messages</h2>
+    <div id="messages-status" class="status"></div>
+    <button class="secondary-button" onclick="loadMessages()">Refresh messages</button>
+    <div id="messages-list"><p class="small-muted">Sign in to view your messages.</p></div>
+    <div id="reply-area" class="hidden">
+      <h3 id="reply-heading">Reply to supplier</h3>
+      <div class="field">
+        <label for="reply-text">Your message</label>
+        <textarea id="reply-text" placeholder="Write your message..."></textarea>
+      </div>
+      <button class="full-button" onclick="sendReply()">Send message</button>
+    </div>
+  </section>
+
+  <section id="cart" class="panel">
+    <h2>My cart</h2>
+    <div id="cart-status" class="status"></div>
+    <div id="cart-items"></div>
+    <div id="cart-total" style="font-weight:800;margin:15px 0"></div>
+    <button class="full-button" onclick="checkout()">Continue to checkout</button>
+    <p class="small-muted">Checkout here does not collect or verify a payment. Confirm price, availability, delivery and payment directly with the supplier.</p>
+  </section>
+
+  <section id="profile" class="panel">
+    <h2>My profile</h2>
+    <p class="small-muted">Manage your account and selling activities.</p>
+    <button class="full-button" onclick="showPanel('account')">Account / sign in</button>
+    <button class="secondary-button" onclick="showPanel('publish')">Publish a product</button>
+    <button class="secondary-button" onclick="showPanel('messages')">Supplier messages</button>
+    <button class="secondary-button" onclick="showPanel('cart')">View cart</button>
+  </section>
+
+  <footer>SS SUPPLY · Shoe materials wholesale marketplace</footer>
+</main>
+
+<nav class="bottom-nav" aria-label="Main navigation">
+  <button class="active" data-panel="home" onclick="showPanel('home')"><span>🏠</span>Home</button>
+  <button data-panel="categories" onclick="showPanel('categories')"><span>▦</span>Categories</button>
+  <button data-panel="messages" onclick="showPanel('messages')"><span>💬</span>Messages</button>
+  <button data-panel="publish" onclick="showPanel('publish')"><span>＋</span>Sell</button>
+  <button data-panel="profile" onclick="showPanel('profile')"><span>👤</span>Profile</button>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+'use strict';
+
+/*
+ SS SUPPLY CONFIGURATION
+ This is the public browser key, not a secret service-role key.
+ Keep database and storage access protected by Supabase RLS policies.
+*/
+const SUPABASE_URL = 'https://sqqzkfnoxnqntpcjfcbr.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_dSayHKq4rvYZY5BQYQXs7w_tr8Q04ia';
+const PRODUCT_TABLE = 'ss_products';
+const MESSAGE_TABLE = 'ss_messages';
+const IMAGE_BUCKET = 'product-images';
+
+let db = null;
+let currentUser = null;
+let allProducts = [];
+let activeCategory = '';
+let selectedProductForReply = null;
+let cart = [];
+try {
+  cart = JSON.parse(localStorage.getItem('ss_supply_cart') || '[]');
+  if (!Array.isArray(cart)) cart = [];
+} catch (_) { cart = []; }
+
+function showStatus(id, message, type = 'info') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = message;
+  el.className = 'status show ' + type;
+}
+function clearStatus(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.textContent = '';
+    el.className = 'status';
+  }
+}
+function money(value) {
+  return '₦' + Number(value || 0).toLocaleString('en-NG', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  });
+}
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  })[ch]);
+}
+function initDatabase() {
+  if (!window.supabase) {
+    showStatus('product-status', 'The Supabase library could not load. Check your internet connection and refresh.', 'error');
+    return false;
+  }
+  db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return true;
+}
+function showPanel(name) {
+  const home = document.getElementById('home-view');
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
+
+  if (name === 'home') {
+    home.classList.remove('hidden');
+  } else if (name === 'categories') {
+    home.classList.remove('hidden');
+    document.getElementById('categories').scrollIntoView({behavior:'smooth', block:'start'});
+    document.querySelector('[data-panel="categories"]').classList.add('active');
+    return;
+  } else {
+    home.classList.add('hidden');
+    const panel = document.getElementById(name);
+    if (panel) panel.classList.add('active');
+  }
+
+  const navName = name === 'account' ? 'profile' : name;
+  const navButton = document.querySelector('[data-panel="' + navName + '"]');
+  if (navButton) navButton.classList.add('active');
+
+  if (name === 'cart') renderCart();
+  if (name === 'messages') loadMessages();
+  if (name === 'account' || name === 'profile') updateAccountUI();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+async function refreshUser() {
+  if (!db) return;
+  try {
+    const { data, error } = await db.auth.getSession();
+    if (error) throw error;
+    currentUser = data.session ? data.session.user : null;
+    updateAccountUI();
+  } catch (error) {
+    console.error(error);
+  }
+}
+function updateAccountUI() {
+  document.getElementById('signed-in-area').classList.toggle('hidden', !currentUser);
+  document.getElementById('signed-out-area').classList.toggle('hidden', !!currentUser);
+  document.getElementById('account-email').textContent = currentUser ? currentUser.email : '';
+}
+async function signUp() {
+  if (!db) return;
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  if (!email || password.length < 6) {
+    showStatus('account-status', 'Enter a valid email and a password of at least 6 characters.', 'error');
+    return;
+  }
+  showStatus('account-status', 'Creating your account...', 'info');
+  const { data, error } = await db.auth.signUp({email, password});
+  if (error) {
+    showStatus('account-status', error.message, 'error');
+    return;
+  }
+  currentUser = data.user || null;
+  updateAccountUI();
+  showStatus('account-status',
+    data.session
+      ? 'Account created successfully.'
+      : 'Account request received. Check your email to confirm your account, then sign in.',
+    'success');
+}
+async function signIn() {
+  if (!db) return;
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  if (!email || !password) {
+    showStatus('account-status', 'Enter your email address and password.', 'error');
+    return;
+  }
+  showStatus('account-status', 'Signing in...', 'info');
+  const { data, error } = await db.auth.signInWithPassword({email, password});
+  if (error) {
+    showStatus('account-status', error.message, 'error');
+    return;
+  }
+  currentUser = data.user;
+  updateAccountUI();
+  showStatus('account-status', 'You are signed in.', 'success');
+  loadProducts();
+}
+async function signOut() {
+  if (!db) return;
+  const { error } = await db.auth.signOut();
+  if (error) {
+    showStatus('account-status', error.message, 'error');
+    return;
+  }
+  currentUser = null;
+  updateAccountUI();
+  showStatus('account-status', 'You have signed out.', 'success');
+}
+async function loadProducts() {
+  if (!db) return;
+  const grid = document.getElementById('product-grid');
+  grid.innerHTML = '<div class="empty">Loading products...</div>';
+  clearStatus('product-status');
+
+  const { data, error } = await db
+    .from(PRODUCT_TABLE)
+    .select('id,name,price,description,category,image_url,seller_id')
+    .order('id', {ascending:false})
+    .limit(100);
+
+  if (error) {
+    grid.innerHTML = '<div class="empty">Products could not be loaded.</div>';
+    showStatus('product-status',
+      'Could not load products. Check that ss_products exists, the columns match this code, and its SELECT policy allows public product viewing. Details: ' + error.message,
+      'error');
+    return;
+  }
+
+  allProducts = data || [];
+  renderProducts(allProducts);
+}
+function renderProducts(products) {
+  const grid = document.getElementById('product-grid');
+  const query = document.getElementById('search-input').value.trim().toLowerCase();
+  let list = products || [];
+
+  if (activeCategory) {
+    list = list.filter(p => String(p.category || '').toLowerCase() === activeCategory.toLowerCase());
+  }
+  if (query) {
+    list = list.filter(p =>
+      [p.name, p.description, p.category].some(v => String(v || '').toLowerCase().includes(query))
+    );
+  }
+
+  document.getElementById('products-title').textContent =
+    activeCategory ? activeCategory : (query ? 'Search results' : 'Available products');
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty">No products found. Try another search or check back later.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(p => {
+    const isOwn = currentUser && p.seller_id === currentUser.id;
+    const picture = p.image_url
+      ? '<img class="product-image" src="' + escapeHTML(p.image_url) + '" alt="' + escapeHTML(p.name) + '" loading="lazy" onerror="this.style.display=\'none\'">'
+      : '<div class="product-placeholder">👞</div>';
+
+    return '<article class="product-card">' +
+      picture +
+      '<div class="product-info">' +
+      '<h3>' + escapeHTML(p.name) + '</h3>' +
+      '<div class="price">' + money(p.price) + '</div>' +
+      '<p class="product-description">' + escapeHTML(p.description || p.category || 'Contact supplier for details.') + '</p>' +
+      '<div class="seller-name">' + escapeHTML(p.category || 'Materials') + '</div>' +
+      '<div class="card-buttons">' +
+      '<button onclick="addToCart(' + JSON.stringify(String(p.id)) + ')">Add to cart</button>' +
+      '<button onclick="messageSupplier(' + JSON.stringify(String(p.id)) + ')">' +
+      (isOwn ? 'Your product' : 'Message supplier') + '</button>' +
+      '</div></div></article>';
+  }).join('');
+}
+function chooseCategory(category, button) {
+  activeCategory = category;
+  document.querySelectorAll('.category').forEach(b => b.classList.remove('active'));
+  if (button) button.classList.add('active');
+  renderProducts(allProducts);
+  document.getElementById('products-heading').scrollIntoView({behavior:'smooth'});
+}
+function searchProducts() {
+  activeCategory = '';
+  document.querySelectorAll('.category').forEach(b => b.classList.remove('active'));
+  renderProducts(allProducts);
+  document.getElementById('products-heading').scrollIntoView({behavior:'smooth'});
+}
+document.getElementById('search-input').addEventListener('keydown', event => {
+  if (event.key === 'Enter') searchProducts();
+});
+document.getElementById('search-input').addEventListener('input', () => {
+  if (document.getElementById('home-view').classList.contains('hidden')) return;
+  renderProducts(allProducts);
+});
+document.getElementById('photo-search').addEventListener('change', event => {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  showStatus('product-status',
+    'Photo selected: ' + file.name + '. Image-based product recognition is not connected yet. Try describing the item in the search box.',
+    'info');
+  document.getElementById('search-input').focus();
+});
+function voiceSearch() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showStatus('product-status',
+      'Voice search is not supported in this browser. Please type your search instead.',
+      'info');
+    return;
+  }
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'en-NG';
+  recognition.onresult = event => {
+    document.getElementById('search-input').value = event.results[0][0].transcript;
+    searchProducts();
+  };
+  recognition.onerror = () => showStatus('product-status', 'Voice search could not start. Please type your search.', 'info');
+  recognition.start();
+}
+document.getElementById('product-image').addEventListener('change', event => {
+  const file = event.target.files && event.target.files[0];
+  const preview = document.getElementById('image-preview');
+  if (!file) {
+    preview.src = '';
+    preview.classList.remove('show');
+    return;
+  }
+  if (!file.type.startsWith('image/')) {
+    showStatus('publish-status', 'Please choose an image file.', 'error');
+    event.target.value = '';
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    showStatus('publish-status', 'Image is too large. Please choose an image smaller than 5 MB.', 'error');
+    event.target.value = '';
+    return;
+  }
+  preview.src = URL.createObjectURL(file);
+  preview.classList.add('show');
+  clearStatus('publish-status');
+});
+document.getElementById('publish-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!db) return;
+  if (!currentUser) {
+    showStatus('publish-status', 'Please sign in before publishing a product.', 'error');
+    showPanel('account');
+    return;
+  }
+
+  const name = document.getElementById('product-name').value.trim();
+  const price = Number(document.getElementById('product-price').value);
+  const category = document.getElementById('product-category').value;
+  const description = document.getElementById('product-description').value.trim();
+  const fileInput = document.getElementById('product-image');
+  const file = fileInput.files && fileInput.files[0];
+  const button = document.getElementById('publish-button');
+
+  if (!name || !Number.isFinite(price) || price <= 0) {
+    showStatus('publish-status', 'Enter a product name and a price greater than zero.', 'error');
+    return;
+  }
+
+  button.disabled = true;
+  showStatus('publish-status', 'Publishing product...', 'info');
+  let imageUrl = null;
+
+  try {
+    if (file) {
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const path = currentUser.id + '/' + Date.now() + '-' + safeName;
+      const { data: uploadData, error: uploadError } = await db.storage
+        .from(IMAGE_BUCKET)
+        .upload(path, file, {upsert:false, contentType:file.type});
+
+      if (uploadError) {
+        throw new Error('Image upload failed. Check that the product-images bucket exists and its upload policy allows signed-in sellers. ' + uploadError.message);
+      }
+
+      const { data: publicData } = db.storage.from(IMAGE_BUCKET).getPublicUrl(uploadData.path);
+      imageUrl = publicData && publicData.publicUrl ? publicData.publicUrl : null;
+    }
+
+    const { error } = await db.from(PRODUCT_TABLE).insert({
+      name,
+      price,
+      description,
+      category,
+      image_url: imageUrl,
+      seller_id: currentUser.id
+    });
+
+    if (error) {
+      throw new Error('Product could not be saved. Check the ss_products column names and INSERT policy. ' + error.message);
+    }
+
+    document.getElementById('publish-form').reset();
+    document.getElementById('image-preview').src = '';
+    document.getElementById('image-preview').classList.remove('show');
+    showStatus('publish-status', 'Product published successfully.', 'success');
+    await loadProducts();
+  } catch (error) {
+    showStatus('publish-status', error.message || 'Something went wrong while publishing.', 'error');
+  } finally {
+    button.disabled = false;
+  }
+});
+function saveCart() {
+  try { localStorage.setItem('ss_supply_cart', JSON.stringify(cart)); } catch (_) {}
+  updateCartCount();
+}
+function updateCartCount() {
+  const count = cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+  document.getElementById('cart-count').textContent = count;
+}
+function addToCart(id) {
+  const product = allProducts.find(p => String(p.id) === String(id));
+  if (!product) {
+    alert('This product is no longer available. Refresh the page.');
+    return;
+  }
+  const existing = cart.find(item => String(item.id) === String(id));
+  if (existing) existing.quantity += 1;
+  else cart.push({
+    id: String(product.id),
+    name: product.name,
+    price: Number(product.price),
+    quantity: 1,
+    seller_id: product.seller_id
+  });
+  saveCart();
+  renderCart();
+  showStatus('product-status', product.name + ' added to your cart.', 'success');
+}
+function changeQuantity(id, amount) {
+  const item = cart.find(i => String(i.id) === String(id));
+  if (!item) return;
+  item.quantity += amount;
+  if (item.quantity <= 0) cart = cart.filter(i => String(i.id) !== String(id));
+  saveCart();
+  renderCart();
+}
+function removeCartItem(id) {
+  cart = cart.filter(i => String(i.id) !== String(id));
+  saveCart();
+  renderCart();
+}
+function renderCart() {
+  const container = document.getElementById('cart-items');
+  const totalEl = document.getElementById('cart-total');
+  if (!cart.length) {
+    container.innerHTML = '<div class="empty">Your cart is empty. Add a product to get started.</div>';
+    totalEl.textContent = '';
+    return;
+  }
+  container.innerHTML = cart.map(item =>
+    '<div class="cart-item"><strong>' + escapeHTML(item.name) + '</strong>' +
+    '<div>' + money(item.price) + ' each</div>' +
+    '<div class="cart-controls">' +
+    '<button onclick="changeQuantity(' + JSON.stringify(item.id) + ',-1)">−</button>' +
+    '<span>' + Number(item.quantity) + '</span>' +
+    '<button onclick="changeQuantity(' + JSON.stringify(item.id) + ',1)">+</button>' +
+    '<button onclick="removeCartItem(' + JSON.stringify(item.id) + ')">Remove</button>' +
+    '</div><p><strong>Subtotal: ' + money(Number(item.price) * Number(item.quantity)) + '</strong></p></div>'
+  ).join('');
+  const total = cart.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0);
+  totalEl.textContent = 'Estimated total: ' + money(total);
+}
+function checkout() {
+  if (!cart.length) {
+    showStatus('cart-status', 'Your cart is empty. Add a product first.', 'error');
+    return;
+  }
+  showStatus('cart-status',
+    'Your cart total is ' + money(cart.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0)) +
+    '. No payment has been taken and no order has been confirmed. Please message each supplier to confirm stock, delivery and payment details. This page does not yet create a saved order or verify bank transfers.',
+    'info');
+}
+async function messageSupplier(id) {
+  if (!currentUser) {
+    showStatus('product-status', 'Please sign in before messaging a supplier.', 'info');
+    showPanel('account');
+    return;
+  }
+  const product = allProducts.find(p => String(p.id) === String(id));
+  if (!product) return;
+  if (product.seller_id === currentUser.id) {
+    showStatus('product-status', 'This is your own product. Sign in with a buyer account to message its supplier.', 'info');
+    return;
+  }
+  selectedProductForReply = {product_id:product.id, receiver_id:product.seller_id};
+  showPanel('messages');
+  document.getElementById('reply-area').classList.remove('hidden');
+  document.getElementById('reply-heading').textContent = 'Message supplier: ' + product.name;
+  document.getElementById('reply-text').value = '';
+  document.getElementById('reply-text').placeholder = 'Ask about price, quantity, quality or delivery...';
+}
+async function sendReply() {
+  if (!db || !currentUser) {
+    showStatus('messages-status', 'Please sign in first.', 'error');
+    return;
+  }
+  if (!selectedProductForReply || !selectedProductForReply.receiver_id) {
+    showStatus('messages-status', 'Open a product and choose Message supplier first.', 'error');
+    return;
+  }
+  const message = document.getElementById('reply-text').value.trim();
+  if (!message) {
+    showStatus('messages-status', 'Write a message first.', 'error');
+    return;
+  }
+  if (selectedProductForReply.receiver_id === currentUser.id) {
+    showStatus('messages-status', 'You cannot message yourself.', 'error');
+    return;
+  }
+
+  showStatus('messages-status', 'Sending message...', 'info');
+  const {error} = await db.from(MESSAGE_TABLE).insert({
+    sender_id: currentUser.id,
+    receiver_id: selectedProductForReply.receiver_id,
+    product_id: selectedProductForReply.product_id,
+    message
+  });
+  if (error) {
+    showStatus('messages-status',
+      'Message failed. Check that ss_messages has sender_id, receiver_id, product_id and message columns, and that its RLS policies allow the sender to insert. Details: ' + error.message,
+      'error');
+    return;
+  }
+  document.getElementById('reply-text').value = '';
+  showStatus('messages-status', 'Message sent.', 'success');
+  await loadMessages();
+}
+async function loadMessages() {
+  const list = document.getElementById('messages-list');
+  if (!db || !currentUser) {
+    list.innerHTML = '<p class="small-muted">Sign in to view and send supplier messages.</p>';
+    return;
+  }
+  list.innerHTML = '<p class="small-muted">Loading messages...</p>';
+  const {data, error} = await db.from(MESSAGE_TABLE)
+    .select('id,sender_id,receiver_id,product_id,message')
+    .or('sender_id.eq.' + currentUser.id + ',receiver_id.eq.' + currentUser.id)
+    .order('id', {ascending:false})
+    .limit(50);
+
+  if (error) {
+    list.innerHTML = '';
+    showStatus('messages-status',
+      'Could not load messages. Check the ss_messages column names and SELECT policy. Details: ' + error.message,
+      'error');
+    return;
+  }
+  if (!data || !data.length) {
+    list.innerHTML = '<div class="empty">No messages yet. Open a product and tap Message supplier.</div>';
+    return;
+  }
+  list.innerHTML = data.map(m =>
+    '<div class="chat-item"><strong>' +
+    (m.sender_id === currentUser.id ? 'You sent' : 'Supplier / buyer sent') +
+    '</strong><p>' + escapeHTML(m.message) + '</p>' +
+    '<small class="small-muted">Product ID: ' + escapeHTML(m.product_id || 'N/A') + '</small></div>'
+  ).join('');
+}
+if (initDatabase()) {
+  refreshUser();
+  loadProducts();
+  updateCartCount();
+  db.auth.onAuthStateChange((_event, session) => {
+    currentUser = session ? session.user : null;
+    updateAccountUI();
+  });
+} else {
+  document.getElementById('product-grid').innerHTML =
+    '<div class="empty">Could not connect to the database library.</div>';
+}
+</script>
+</body>
+</html>
+
