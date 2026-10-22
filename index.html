@@ -151,5 +151,84 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
+<script>
+(function () {
+  "use strict";
+
+  function repairText(value) {
+    let text = value;
+
+    for (let i = 0; i < 3; i++) {
+      if (!/[ÃÂâðï]/.test(text)) break;
+
+      try {
+        const bytes = new Uint8Array(
+          Array.from(text, ch => ch.charCodeAt(0) & 255)
+        );
+
+        const repaired = new TextDecoder("utf-8").decode(bytes);
+
+        if (repaired === text) break;
+        text = repaired;
+      } catch (error) {
+        break;
+      }
+    }
+
+    return text;
+  }
+
+  function repairNode(node) {
+    if (node.nodeType === 3) {
+      const fixed = repairText(node.nodeValue || "");
+      if (fixed !== node.nodeValue) node.nodeValue = fixed;
+      return;
+    }
+
+    if (node.nodeType !== 1) return;
+
+    for (const attr of Array.from(node.attributes)) {
+      const fixed = repairText(attr.value);
+      if (fixed !== attr.value) {
+        node.setAttribute(attr.name, fixed);
+      }
+    }
+
+    for (const child of Array.from(node.childNodes)) {
+      repairNode(child);
+    }
+  }
+
+  function repairPage() {
+    repairNode(document.body);
+  }
+
+  repairPage();
+
+  const observer = new MutationObserver(function (records) {
+    for (const record of records) {
+      if (record.type === "characterData") {
+        repairNode(record.target);
+      }
+
+      if (record.type === "childList") {
+        record.addedNodes.forEach(repairNode);
+      }
+
+      if (record.type === "attributes") {
+        repairNode(record.target);
+      }
+    }
+  });
+
+  observer.observe(document.body, {
+    subtree: true,
+    childList: true,
+    characterData: true,
+    attributes: true
+  });
+})();
+</script>
+
 </body>
 </html>
