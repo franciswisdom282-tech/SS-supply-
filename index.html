@@ -139,5 +139,17 @@ $('voiceBtn').addEventListener('click',()=>{const SR=window.SpeechRecognition||w
 function openCameraSearch(){ $('cameraInput').click() }
 renderCategoryGrids();updateSellPanel();renderCart();initClient();
 </script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js")
+      .catch((error) => {
+        console.error("Service worker registration failed:", error);
+      });
+  });
+}
+</script>
+
 </body>
 </html>
