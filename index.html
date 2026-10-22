@@ -466,35 +466,62 @@ function startChat(seller,name){
  show("messages");
 }
 
+
 async function loadMessages(){
  if(!initClient()||!user||!chatSupplier){
   $("chatLog").textContent="Sign in and choose a supplier listing first.";
   return;
  }
- const expr=`and(sender_id.eq.${user.id},recipient_id.eq.${chatSupplier}),and(sender_id.eq.${chatSupplier},recipient_id.eq.${user.id})`;
- const {data,error}=await db.from(MESSAGES_TABLE).select("*")
-  .or(expr).order("created_at",{ascending:true}).limit(100);
- if(error){$("chatLog").textContent="Message error: "+error.message;return;}
+
+ const expr=`and(sender_id.eq.${user.id},receiver_id.eq.${chatSupplier}),and(sender_id.eq.${chatSupplier},receiver_id.eq.${user.id})`;
+
+ const {data,error}=await db.from(MESSAGES_TABLE)
+  .select("*")
+  .or(expr)
+  .order("created_at",{ascending:true})
+  .limit(100);
+
+ if(error){
+  $("chatLog").textContent="Message error: "+error.message;
+  return;
+ }
+
  $("chatLog").innerHTML=(data||[]).map(m=>`
-  <div class="msg"><b>${m.sender_id===user.id?"You":"Supplier"}:</b> ${esc(m.message)}
-  <div class="muted">${m.created_at?new Date(m.created_at).toLocaleString():""}</div></div>`
- ).join("")||"No messages yet.";
+  <div class="msg">
+   <b>${m.sender_id===user.id?"You":"Supplier"}:</b> ${esc(m.message)}
+   <div class="muted">${m.created_at?new Date(m.created_at).toLocaleString():""}</div>
+  </div>
+ `).join("")||"No messages yet.";
+
  $("chatLog").scrollTop=$("chatLog").scrollHeight;
 }
 
 $("messageForm").addEventListener("submit",async e=>{
  e.preventDefault();
+
  if(!initClient()||!user||!chatSupplier){
-  alert("Sign in and select a supplier first.");return;
+  alert("Sign in and select a supplier first.");
+  return;
  }
+
  const message=$("messageText").value.trim();
  if(!message)return;
+
  const {error}=await db.from(MESSAGES_TABLE).insert({
-  sender_id:user.id,recipient_id:chatSupplier,message
+  sender_id:user.id,
+  receiver_id:chatSupplier,
+  message:message
  });
- if(error){alert("Message failed: "+error.message);return;}
+
+ if(error){
+  alert("Message failed: "+error.message);
+  return;
+ }
+
  $("messageText").value="";
  await loadMessages();
+});
+
 });
 
 async function loadOrders(){
