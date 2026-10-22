@@ -985,7 +985,7 @@ async function loadMessages() {
   }
   list.innerHTML = '<p class="small-muted">Loading messages...</p>';
   const {data, error} = await db.from(MESSAGE_TABLE)
-    .select('id,sender_id,receiver_id,product_id,message')
+    .select('id,sender_id,receiver_id,message')
     .or('sender_id.eq.' + currentUser.id + ',receiver_id.eq.' + currentUser.id)
     .order('id', {ascending:false})
     .limit(50);
