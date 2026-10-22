@@ -195,7 +195,7 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dSayHKq4rvYZY5BQYQXs7w_tr8Q04ia
 /* These names must match your existing Supabase database. */
 const PRODUCTS_TABLE = "products";
 const MESSAGES_TABLE = "ss_messages";
-const IMAGE_BUCKET = "product-images";
+const IMAGE_BUCKET = "supabase.storage.from('products')";
 
 let db = null;
 let user = null;
