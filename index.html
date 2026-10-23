@@ -1087,7 +1087,71 @@ async function sendReply() {
   showStatus('messages-status', 'Message sent.', 'success');
   await loadMessages();
 }
+
 async function loadMessages() {
+  const list = document.getElementById('messages-list');
+
+  if (!list) return;
+
+  if (!db || !currentUser) {
+    list.innerHTML =
+      '<p class="small-muted">Sign in to view and send supplier messages.</p>';
+    return;
+  }
+
+  list.innerHTML =
+    '<p class="small-muted">Loading messages...</p>';
+
+  const userId = currentUser.id;
+
+  const { data, error } = await db
+    .from(MESSAGE_TABLE)
+    .select('id,sender_id,receiver_id,recipient_id,message,created_at')
+    .or(
+      'sender_id.eq.' + userId +
+      ',receiver_id.eq.' + userId +
+      ',recipient_id.eq.' + userId
+    )
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  if (error) {
+    list.innerHTML = '';
+    showStatus(
+      'messages-status',
+      'Could not load messages. Check the ss_messages columns and SELECT policy. Details: ' +
+        error.message,
+      'error'
+    );
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    list.innerHTML =
+      '<div class="empty">No messages yet. Open a product and tap Message supplier.</div>';
+    return;
+  }
+
+  list.innerHTML = data.map(function (m) {
+    const sender =
+      String(m.sender_id) === String(userId)
+        ? 'You sent'
+        : 'Supplier / buyer sent';
+
+    return (
+      '<div class="chat-item">' +
+      '<strong>' + sender + '</strong>' +
+      '<p>' + escapeHTML(m.message || '') + '</p>' +
+      (m.created_at
+        ? '<small class="small-muted">' +
+          escapeHTML(m.created_at) +
+          '</small>'
+        : '') +
+      '</div>'
+    );
+  }).join('');
+}
+
   const list = document.getElementById('messages-list');
   if (!db || !currentUser) {
     list.innerHTML = '<p class="small-muted">Sign in to view and send supplier messages.</p>';
