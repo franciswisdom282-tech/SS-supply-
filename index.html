@@ -996,7 +996,62 @@ async function messageSupplier(id) {
   document.getElementById('reply-text').value = '';
   document.getElementById('reply-text').placeholder = 'Ask about price, quantity, quality or delivery...';
 }
+
 async function sendReply() {
+  if (!db || !currentUser) {
+    showStatus('messages-status', 'Please sign in first.', 'error');
+    return;
+  }
+
+  if (
+    !selectedProductForReply ||
+    !selectedProductForReply.receiver_id
+  ) {
+    showStatus(
+      'messages-status',
+      'Open a product and choose Message supplier first.',
+      'error'
+    );
+    return;
+  }
+
+  const replyText = document.getElementById('reply-text');
+  const message = replyText.value.trim();
+  const receiverId = selectedProductForReply.receiver_id;
+
+  if (!message) {
+    showStatus('messages-status', 'Write a message first.', 'error');
+    return;
+  }
+
+  if (String(receiverId) === String(currentUser.id)) {
+    showStatus('messages-status', 'You cannot message yourself.', 'error');
+    return;
+  }
+
+  showStatus('messages-status', 'Sending message...', 'info');
+
+  const { error } = await db.from(MESSAGE_TABLE).insert({
+    sender_id: currentUser.id,
+    receiver_id: receiverId,
+    recipient_id: receiverId,
+    message: message
+  });
+
+  if (error) {
+    showStatus(
+      'messages-status',
+      'Message failed. Check the ss_messages columns and INSERT policy. Details: ' +
+        error.message,
+      'error'
+    );
+    return;
+  }
+
+  replyText.value = '';
+  showStatus('messages-status', 'Message sent.', 'success');
+}
+
   if (!db || !currentUser) {
     showStatus('messages-status', 'Please sign in first.', 'error');
     return;
