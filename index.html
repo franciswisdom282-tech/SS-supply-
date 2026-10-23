@@ -922,7 +922,62 @@ function checkout() {
     '. No payment has been taken and no order has been confirmed. Please message each supplier to confirm stock, delivery and payment details. This page does not yet create a saved order or verify bank transfers.',
     'info');
 }
+
 async function messageSupplier(id) {
+  if (!currentUser) {
+    showStatus(
+      'product-status',
+      'Please sign in before messaging a supplier.',
+      'info'
+    );
+    showPanel('account');
+    return;
+  }
+
+  const product = allProducts.find(
+    p => String(p.id) === String(id)
+  );
+
+  if (!product) {
+    showStatus('product-status', 'Product not found.', 'error');
+    return;
+  }
+
+  if (String(product.seller_id) === String(currentUser.id)) {
+    showStatus(
+      'product-status',
+      'This is your own product. Sign in with a buyer account to message its supplier.',
+      'info'
+    );
+    return;
+  }
+
+  selectedProductForReply = {
+    product_id: product.id,
+    receiver_id: product.seller_id
+  };
+
+  showPanel('messages');
+
+  const replyArea = document.getElementById('reply-area');
+  const heading = document.getElementById('reply-heading');
+  const replyText = document.getElementById('reply-text');
+
+  if (replyArea) {
+    replyArea.classList.remove('hidden');
+  }
+
+  if (heading) {
+    heading.textContent = 'Message supplier: ' + product.name;
+  }
+
+  if (replyText) {
+    replyText.value = '';
+    replyText.placeholder =
+      'Ask about price, quantity, quality or delivery...';
+  }
+}
+
   if (!currentUser) {
     showStatus('product-status', 'Please sign in before messaging a supplier.', 'info');
     showPanel('account');
